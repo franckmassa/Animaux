@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Continent{% endblock %}
+{% block monTitre %}Voici le continent : {{ continent.libelle }} {% endblock %}
+{% block body %}
+
+<div class="row">
+    {% for animal in continent.animaux %}
+    <div class="col-6">
+        <div class="row align-items-center">
+            <div class="col-4 col-md-4 col-lg-6 text-center">
+                <img src="{{ asset('images/' ~ animal.image|lower) }}" class="img-fluid">
+            </div>
+            <div class="col text-center">
+                <h2><a href="{{ path('afficher_animal', {'id' : animal.id })}}">{{ animal.nom }}</a></h2>
+                <div>{{ animal.description }}</div>
+                <div><a href="{{ path('afficher_famille', {'id': animal.famille.id }) }}"
+                        class="btn btn-primary">{{animal.famille.libelle}}</a></div>
+                <div>
+                    {% for continentAnimal in animal.continents %}
+                    {# continentAnimal.id c'est l'id du continent que l'on parcours #}
+                    {# continent.id c'est l'id du continent qui est affiché sur la vues
+                    (ex: id =3, continent =affrique) #}
+                    {% if continentAnimal.id != continent.id  %}
+                    <a href="{{ path('afficher_continent', {'id' : continentAnimal.id }) }}"
+                        class="btn btn-warning mt-2">{{ continentAnimal.libelle }}</a>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

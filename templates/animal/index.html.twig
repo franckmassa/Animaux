@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'accueil{% endblock %}
+
+{% block monTitre %}Voici la liste des animaux{% endblock %}
+
+{% block body %}
+{% for animal in animaux %}
+<div class="row align-items-center">
+    <div class="col-2 text-center">
+        {# 1ere solution: <td><img src="{{ asset('images/' ~ animal.nom  ~ '.png') }}" ></td> #}
+        <img src="{{ asset('images/' ~ animal.image|lower) }}">
+    </div>
+    <div class="col-auto text-left">
+        {# Pour créer le lien vers "afficherAnimal.html.twig", on indique le "name" de la route 
+            et on récupère l'id de l'animal que l'on met dans le paramètre 'id' de la @route("/animal/{id}") #}
+        <h2><a href="{{ path('afficher_animal', {'id' : animal.id })}}">{{ animal.nom }}</a></h2>
+        <div>{{ animal.description }}</div>
+        <div><a href="{{ path('afficher_famille', {'id': animal.famille.id })}}"
+                class="btn btn-primary">{{animal.famille.libelle}}</a></div>
+        <div>
+            {% for continent in animal.continents %}
+            <a href="{{ path('afficher_continent', {'id' : continent.id }) }}" class="btn btn-warning mt-2">{{ continent.libelle }}</a>
+            {% endfor %}
+        </div>
+        <div>
+            {% for dispose in animal.disposes %}
+                <a href="{{ path('afficher_personne', {'id': dispose.personne.id})}}" class="btn btn-info mt-2" >{{ dispose.personne.nom }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}
